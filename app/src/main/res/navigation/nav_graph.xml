@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.match.statistics.ui.statistics.StatisticsFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_statistics"
+        />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.match.statistics.ui.company.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_company_search"
+        >
+
+        <action
+            android:id="@+id/action_searchFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_searchFragment_to_companyFragment"
+            app:destination="@id/companyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/companyFragment"
+        android:name="com.match.statistics.ui.company.company.CompanyFragment"
+        android:label="CompanyFragment"
+        tools:layout="@layout/fragment_company" >
+        <argument
+            android:name="company"
+            app:argType="com.match.statistics.domain.model.Company" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.match.statistics.ui.company.review.ReviewFragment"
+        android:label="ReviewFragment"
+        tools:layout="@layout/fragment_review" >
+        <argument
+            android:name="review"
+            app:argType="com.match.statistics.domain.model.Review"/>
+    </fragment>
+
+</navigation>
