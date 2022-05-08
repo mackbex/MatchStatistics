@@ -1,28 +1,24 @@
 package com.match.statistics.di
 
-import com.google.gson.GsonBuilder
 import com.match.statistics.BuildConfig
-import com.match.statistics.data.source.remote.NetConstants
-import com.match.statistics.data.source.remote.NetConstants.CELL_TYPE_COMPANY
-import com.match.statistics.data.source.remote.NetConstants.CELL_TYPE_FIELD
-import com.match.statistics.data.source.remote.NetConstants.CELL_TYPE_HORIZONTAL_THEME
-import com.match.statistics.data.source.remote.NetConstants.CELL_TYPE_REVIEW
-import com.match.statistics.data.source.remote.service.CompanySearchService
-import com.match.statistics.domain.model.Company
-import com.match.statistics.domain.model.HorizontalTheme
-import com.match.statistics.domain.model.Items
-import com.match.statistics.domain.model.Review
-import com.match.statistics.util.RuntimeTypeAdapterFactory
+import com.match.statistics.data.source.remote.service.LoLService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.CipherSuite.Companion.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+import okhttp3.CipherSuite.Companion.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+import okhttp3.CipherSuite.Companion.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -30,13 +26,21 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Provides
-    fun provideBaseUrl() = NetConstants.BASE_URL_V1
-
     @Singleton
     @Provides
     fun provideOkHttpClient() : OkHttpClient {
+
+        val spec: ConnectionSpec = ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+            .tlsVersions(TlsVersion.TLS_1_2)
+            .cipherSuites(
+                TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+            )
+            .build()
+
         val client = OkHttpClient.Builder()
+            .connectionSpecs(Collections.singletonList(spec))
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
@@ -50,35 +54,32 @@ object NetworkModule {
         return client.build()
     }
 
-    /**
-     * Gson을 통한 JSON 데이터 파싱. CELL_TYPE 구분을 위한 RuntimeTypeAdapterFactory 추가.
-     */
-    @Provides
-    @Singleton
-    fun provideConverterFactory(): GsonConverterFactory {
-
-        val adapter = RuntimeTypeAdapterFactory
-            .of(Items::class.java, CELL_TYPE_FIELD, true)
-            .registerSubtype(Company::class.java, CELL_TYPE_COMPANY)
-            .registerSubtype(HorizontalTheme::class.java, CELL_TYPE_HORIZONTAL_THEME)
-            .registerSubtype(Review::class.java, CELL_TYPE_REVIEW)
-
-        return GsonConverterFactory.create(GsonBuilder().registerTypeAdapterFactory(adapter).create())
-    }
+//    @Provides
+//    @Singleton
+//    @Named("LoL")
+//    fun provideLolConverterFactory(): GsonConverterFactory {
+//        return GsonConverterFactory.create(GsonBuilder()
+//            .registerTypeAdapter(
+//                Summoner::class.java, SummonerDeserializer())
+//            .create())
+//    }
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: String, gsonConverterFactory: GsonConverterFactory) : Retrofit {
+    @Named("LoL")
+    fun provideLoLRetrofit(
+        okHttpClient: OkHttpClient) : Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(baseUrl)
-            .addConverterFactory(gsonConverterFactory)
+            .baseUrl(LoLService.BASE_URL_V1)
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
+
     @Singleton
     @Provides
-    fun provideCompanySearchService(retrofit: Retrofit): CompanySearchService {
-        return retrofit.create(CompanySearchService::class.java)
+    fun provideLolService(@Named("LoL") retrofit: Retrofit): LoLService {
+        return retrofit.create(LoLService::class.java)
     }
 }

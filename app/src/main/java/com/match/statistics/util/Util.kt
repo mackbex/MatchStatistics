@@ -9,3 +9,14 @@ fun getProgressbar(context: Context): CircularProgressDrawable {
         centerRadius = 30f
     }
 }
+
+fun modifyToValidUrl(url:String):String {
+
+    val index = url.indexOf("//")
+    return if(index > -1) {
+        "https://" + url.substring(index+2)
+    }
+    else {
+        url
+    }
+}

@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="leagueModel"
-            type="com.match.statistics.domain.model.League" />
+            name="league"
+            type="com.match.statistics.domain.model.lol.League" />
     </data>
 
         <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="12dp"
                 tools:src="@color/black"
-                app:tierImage="@{leagueModel.tierRank.imageUrl}"
+                app:tierImage="@{league.tierImage}"
                 />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +53,7 @@
                     tools:text="솔랭"
                     android:textColor="@color/soft_blue"
                     android:textSize="10sp"
-                    android:text="@{leagueModel.tierRank.name}"
+                    android:text="@{league.rankType}"
                     />
                 <TextView
                     android:id="@+id/tv_tier_name"
@@ -67,7 +67,7 @@
                     android:textStyle="bold"
                     tools:text="Grandmaster"
                     android:textColor="@color/dark_grey"
-                    android:text="@{leagueModel.tierRank.tier}"
+                    android:text="@{league.tier}"
                     />
                 <TextView
                     android:id="@+id/tv_rank_point"
@@ -79,7 +79,7 @@
                     tools:text="1,243 LP"
                     android:textSize="10sp"
                     android:textColor="@color/gunmetal"
-                    android:text="@{@string/profile_rank_lp(leagueModel.tierRank.lp)}"
+                    android:text="@{@string/profile_rank_lp(league.lp)}"
                     />
                 <TextView
                     android:id="@+id/tv_wl"
@@ -91,25 +91,23 @@
                     tools:text="145승 152패 (48%)"
                     android:textSize="10sp"
                     android:textColor="@color/cool_grey"
-                    android:text="@{@string/profile_win_lose_ratio(leagueModel.wins, leagueModel.losses, leagueModel.winRate)}"
+                    android:text="@{@string/profile_win_lose_ratio(league.wins, league.losses, league.winRate)}"
                     />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <com.google.android.material.imageview.ShapeableImageView
+                <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/pale_grey"
-                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    android:background="@drawable/bg_circle_pale"
                     android:scaleType="centerInside"
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_arrow_right"
-
-                    />
+                    android:contentDescription="Btn move right" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 </layout>

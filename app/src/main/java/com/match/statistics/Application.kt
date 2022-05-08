@@ -1,7 +1,16 @@
 package com.match.statistics
 
-import android.app.Application
+import android.content.Context
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import dagger.hilt.android.HiltAndroidApp
 
+
 @HiltAndroidApp
-class Application: Application()
+class Application: MultiDexApplication() {
+
+    override fun attachBaseContext(context: Context?) {
+        super.attachBaseContext(context)
+        MultiDex.install(this)
+    }
+}

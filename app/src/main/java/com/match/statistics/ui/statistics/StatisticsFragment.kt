@@ -11,8 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.match.statistics.databinding.FragmentStatisticsBinding
-import com.match.statistics.ui.statistics.profile.ProfileAdapter
-import com.match.statistics.util.Resource
+import com.match.statistics.domain.model.lol.Analysis
+import com.match.statistics.domain.model.lol.Match
+import com.match.statistics.domain.model.lol.Summoner
+import com.match.statistics.ui.custom.profile.ProfileAdapter
+import com.match.statistics.util.wrapper.Resource
 import com.match.statistics.util.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,11 +40,20 @@ class StatisticsFragment : Fragment() {
             viewModel = this@StatisticsFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
 
-            binding.rcRankRecord.adapter = ProfileAdapter().apply {
+            layoutProfile.binding.rcRankRecord.adapter = ProfileAdapter().apply {
                 setPostInterface { league, binding ->
                     binding.root.setOnClickListener {
-                        Snackbar.make(binding.root, league.tierRank.name, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, league.tier, Snackbar.LENGTH_SHORT).show()
                     }
+                }
+            }
+
+            rcMatchHistory.adapter = MatchHistoryAdapter()
+
+            layoutProfile.binding.btnRefresh.setOnClickListener {
+                with(this@StatisticsFragment.viewModel) {
+                    getUserProfile(curSummonerName)
+                    getMatches(curSummonerName)
                 }
             }
         }
@@ -55,16 +67,73 @@ class StatisticsFragment : Fragment() {
     private fun initStates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
                 launch {
-                    viewModel.userProfileState.collect {
+                    viewModel.summonerNameState.collect{
                         when(it) {
                             is Resource.Success -> {
-
+                                viewModel.curSummonerName = it.data
+                                viewModel.getUserProfile(it.data)
+                                viewModel.getMatches(it.data)
+                            }
+                            is Resource.Failure -> {
+                                // TODO: Back to Login View.
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.summonerProfileState.collect {
+                        when(it) {
+                            is Resource.Success -> {
+                                setProfileUI(it.data.summoner)
+                                it.data.analysis?.let { analysis ->
+                                    setAnalysisUI(analysis)
+                                }
+                            }
+                        }
+                    }
+                }
+                launch {
+                    viewModel.summonerMatchesState.collect {
+                        when(it) {
+                            is Resource.Success -> {
+                                setMatchHistoryUI(it.data)
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun setProfileUI(summoner: Summoner) {
+        with(binding.layoutProfile) {
+            profileImageUrl = summoner.profileImageUrl
+            name = summoner.name
+            level = summoner.level
+            leagues = summoner.leagues
+        }
+    }
+
+    private fun setAnalysisUI(analysis: Analysis) {
+        with(binding.layoutAnalysis) {
+            games = analysis.games
+            wins = analysis.wins
+            losses = analysis.losses
+            kills = analysis.kills
+            deaths = analysis.deaths
+            assists = analysis.assists
+            kdaRatio = analysis.kda
+            killContrib = analysis.killContrib
+            mostChampions = analysis.mostChampions
+            mostPosition = analysis.mostPosition
+            positionWinRate = analysis.positionWinRate
+        }
+    }
+
+    private fun setMatchHistoryUI(list:List<Match>) {
+        val adapter = binding.rcMatchHistory.adapter as MatchHistoryAdapter
+        adapter.submitList(list)
     }
 }

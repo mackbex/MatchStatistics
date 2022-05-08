@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="java.util.List"/>
+        <import type="com.match.statistics.domain.model.lol.Champion"/>
+        <variable name="games" type="java.lang.Integer" />
+        <variable name="wins" type="java.lang.Integer" />
+        <variable name="losses" type="java.lang.Integer" />
+        <variable name="kills" type="java.lang.Float" />
+        <variable name="deaths" type="java.lang.Float" />
+        <variable name="assists" type="java.lang.Float" />
+        <variable name="kdaRatio" type="java.lang.Float" />
+        <variable name="killContrib" type="java.lang.Integer" />
+        <variable name="mostChampions" type="List&lt;Champion>" />
+        <variable name="mostPosition" type="java.lang.String" />
+        <variable name="positionWinRate" type="java.lang.Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_statistics"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_recent_20_games"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cool_grey"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{@string/title_analysis_recent_games(games)}"
+                tools:text="최근 20게임 분석" />
+
+            <TextView
+                android:id="@+id/tv_wl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/cool_grey"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_kda"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{@string/title_analysis_wl(wins,losses)}"
+                tools:text="11승 9패" />
+
+            <TextView
+                android:id="@+id/tv_kda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/charcoal_grey"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_kda_ratio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:kills="@{kills}"
+                app:deaths="@{deaths}"
+                app:assists="@{assists}"
+                tools:text="5.9 / 6.8 / 14.1" />
+
+            <TextView
+                android:id="@+id/tv_kda_ratio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:kda_ratio="@{kdaRatio}"
+                tools:text="3.65:1" />
+
+            <TextView
+                android:id="@+id/tv_kill_contrib"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="10sp"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_kda_ratio"
+                app:kill_contribution="@{killContrib}"
+                tools:text="(66%)" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_most"
+            android:layout_width="110dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toStartOf="@+id/layout_position">
+
+            <TextView
+                android:id="@+id/tv_most_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cool_grey"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/title_analysis_most_winrates"
+                tools:text="모스트 승률" />
+
+
+            <TableLayout
+                android:id="@+id/table_champions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:most_champions="@{mostChampions}"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TableRow android:layout_marginBottom="5dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@color/dark_grey"
+                        app:shapeAppearanceOverlay="@style/circleImageView" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:src="@color/dark_grey"
+                        app:shapeAppearanceOverlay="@style/circleImageView" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/tv_most_1_win_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="10sp"
+                        tools:text="42%"
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_most_2_win_rate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="10sp"
+                        tools:text="100%" />
+                </TableRow>
+            </TableLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_position"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tv_position_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cool_grey"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/title_analysis_position"
+                tools:text="포지션" />
+
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_position"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/bg_circle_pale"
+                app:layout_constraintBottom_toTopOf="@+id/tv_win_rate"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:most_position="@{mostPosition}"
+                app:layout_constraintTop_toBottomOf="@id/tv_position_title" />
+
+            <TextView
+                android:id="@+id/tv_win_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_grey"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@{positionWinRate+`%`}"
+                tools:text="42%" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

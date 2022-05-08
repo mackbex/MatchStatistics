@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.CompanySearch" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/soft_blue</item>
+        <item name="colorPrimary">@color/pale_grey_two</item>
         <item name="colorPrimaryVariant">@color/green_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
