@@ -11,11 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CompanySearch">
+        android:theme="@style/Theme.MatchStatistics">
         <activity
             android:name="com.match.statistics.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.CompanySearch.NoActionBar">
+            android:theme="@style/Theme.MatchStatistics.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
