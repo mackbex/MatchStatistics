@@ -20,39 +20,9 @@ import com.match.statistics.util.getProgressbar
  */
 
 
-@BindingAdapter("profileImageUrl")
-fun bindProfileImageUrl(imageView: ImageView, imgUrl: String?) {
-    val circularProgressDrawable = getProgressbar(imageView.context)
-    circularProgressDrawable.start()
-
-    Glide.with(imageView.context)
-        .load(imgUrl)
-        .fitCenter()
-        .error(ColorDrawable(ContextCompat.getColor(imageView.context,R.color.pale_grey)))
-        .placeholder(circularProgressDrawable)
-        .addListener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>?,
-                isFirstResource: Boolean
-            ): Boolean {
-                circularProgressDrawable.stop()
-                return false
-            }
-
-            override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean
-            ): Boolean {
-                circularProgressDrawable.stop()
-                return false
-            }
-        })
-        .into(imageView)
+@BindingAdapter("view_icon")
+fun bindViewIcon(imageView: ImageView, imgUrl: String?) {
+    imageView.glide(imgUrl)
 }
 
 

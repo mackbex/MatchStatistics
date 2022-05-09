@@ -2,12 +2,14 @@ package com.match.statistics.ui.statistics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.match.statistics.domain.model.lol.Match
 import com.match.statistics.domain.model.lol.SummonerInfo
 import com.match.statistics.domain.usecase.UserInfoUseCase
 import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,10 +39,6 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
-    fun getMatches(userId:String, createDate:String? = null) {
-        viewModelScope.launch {
-            summonerMatchesState.value = userInfoUseCase.getLoLMatches(userId, createDate)
-        }
-    }
+    fun getMatches(userId:String, createDate:String? = null) = userInfoUseCase.getLoLMatches(userId, createDate).cachedIn(viewModelScope)
 
 }

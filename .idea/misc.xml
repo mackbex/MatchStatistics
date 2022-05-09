@@ -53,6 +53,11 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_company_detail.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_company_search.xml" value="0.3591485507246377" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.16033434650455927" />
+        <entry key="app/src/main/res/layout/item_leagues.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/item_match.xml" value="0.30439121756487025" />
+        <entry key="app/src/main/res/layout/layout_analysis.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/layout_profile.xml" value="0.16875" />
       </map>
     </option>
   </component>

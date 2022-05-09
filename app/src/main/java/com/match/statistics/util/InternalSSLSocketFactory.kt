@@ -1,4 +1,4 @@
-package com.match.statistics.data.source
+package com.match.statistics.util
 
 import java.io.IOException
 import java.net.InetAddress

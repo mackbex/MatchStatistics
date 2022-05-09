@@ -93,14 +93,14 @@ fun MatchesResponse.mapToDomain():List<Match> {
     return this.games.map {
         Match(
             gameId = it.gameId,
-            champion = it.champion.imageUrl,
-            spells = it.spells.map { spell -> spell.imageUrl },
-            items = it.items.map {item -> item.imageUrl },
+            championImageUrl = it.champion.imageUrl,
+            spellsImageUrlList = it.spells.map { spell -> spell.imageUrl },
+            itemsImageUrlList = it.items.map { item -> item.imageUrl },
             createDate = it.createDate,
             gameType = it.gameType,
             gameLength = it.gameLength,
             isWin = it.isWin,
-            peak = it.peak,
+            peaksImageUrlList = it.peak,
             kill = it.stats.general.kill,
             death = it.stats.general.death,
             assist = it.stats.general.assist,

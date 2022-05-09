@@ -5,6 +5,7 @@ import com.match.statistics.data.source.remote.service.LoLService
 import com.match.statistics.di.AppModule
 import com.match.statistics.data.model.SummonerResponse
 import com.match.statistics.data.model.mapToDomain
+import com.match.statistics.data.source.remote.lol.LoLDataSource
 import com.match.statistics.domain.repository.lol.LoLUserRepository
 import com.match.statistics.util.Constants.SHARED_PREFERENCE_USER_ID
 import com.match.statistics.util.Constants.SHARED_PREFERENCE_USER_INFO
@@ -17,27 +18,19 @@ import javax.net.ssl.SSLProtocolException
 
 class LoLUserRepositoryImpl @Inject constructor(
     @ApplicationContext private val context:Context,
-    private val loLService: LoLService,
+    private val loLDataSource: LoLDataSource,
     @AppModule.IODispatcher private val defaultDispatcher: CoroutineDispatcher
 ): LoLUserRepository {
 
     override suspend fun getSummonerInfo(userId:String) = withContext(defaultDispatcher) {
-
-        try {
-            val response = loLService.getSummonerProfile(userId)
-            return@withContext if (response.isSuccessful) {
-                val res = (response.body() as SummonerResponse)
-                res.summoner.leagues.map {
+        return@withContext when(val res = loLDataSource.getSummonerProfile(userId)) {
+            is Resource.Success -> Resource.Success(res.data.mapToDomain().apply {
+                this.leagues.map {
                     it.winRate = (it.wins.toFloat() / (it.wins + it.losses) * 100).toInt()
                 }
-                Resource.Success(res.mapToDomain())
-            } else {
-                Resource.Failure(response.message())
-            }
-        }
-        catch (e:SSLProtocolException) {
-            e.printStackTrace()
-            Resource.Failure("SSL handshake error.")
+            })
+            is Resource.Failure -> Resource.Failure(res.msg)
+            else -> throw IllegalStateException()
         }
     }
 

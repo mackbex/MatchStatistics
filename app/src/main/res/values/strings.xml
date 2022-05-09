@@ -9,5 +9,8 @@
     <string name="title_analysis_wl">%dW %dL</string>
     <string name="title_analysis_most_winrates">Most win rates</string>
     <string name="title_analysis_position">Position</string>
+    <string name="title_match_win">W</string>
+    <string name="title_match_loss">L</string>
+    <string name="title_match_kill_contribution">Kill contribution %s</string>
 
 </resources>

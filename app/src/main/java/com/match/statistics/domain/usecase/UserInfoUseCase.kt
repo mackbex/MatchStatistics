@@ -30,5 +30,5 @@ class UserInfoUseCase @Inject constructor(
             }
         }
     }
-    suspend fun getLoLMatches(userId:String, createDate:String?) = loLStatisticsRepository.getMatches(userId, createDate)
+    fun getLoLMatches(userId:String, createDate:String?) = loLStatisticsRepository.getMatches(userId, createDate)
 }

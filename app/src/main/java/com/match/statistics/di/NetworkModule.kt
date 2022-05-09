@@ -2,7 +2,7 @@ package com.match.statistics.di
 
 import com.match.statistics.BuildConfig
 import com.match.statistics.data.source.remote.service.LoLService
-import com.match.statistics.data.source.InternalSSLSocketFactory
+import com.match.statistics.util.InternalSSLSocketFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

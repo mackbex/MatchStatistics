@@ -18,6 +18,8 @@ import com.match.statistics.ui.custom.profile.ProfileAdapter
 import com.match.statistics.util.wrapper.Resource
 import com.match.statistics.util.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -53,7 +55,7 @@ class StatisticsFragment : Fragment() {
             layoutProfile.binding.btnRefresh.setOnClickListener {
                 with(this@StatisticsFragment.viewModel) {
                     getUserProfile(curSummonerName)
-                    getMatches(curSummonerName)
+//                    getMatches(curSummonerName)
                 }
             }
         }
@@ -74,7 +76,10 @@ class StatisticsFragment : Fragment() {
                             is Resource.Success -> {
                                 viewModel.curSummonerName = it.data
                                 viewModel.getUserProfile(it.data)
-                                viewModel.getMatches(it.data)
+                                viewModel.getMatches(it.data).collectLatest {
+                                    (binding.rcMatchHistory.adapter as MatchHistoryAdapter).submitData(it)
+                                }
+//                                viewModel.getMatches(it.data)
                             }
                             is Resource.Failure -> {
                                 // TODO: Back to Login View.
@@ -82,6 +87,7 @@ class StatisticsFragment : Fragment() {
                         }
                     }
                 }
+
                 launch {
                     viewModel.summonerProfileState.collect {
                         when(it) {
@@ -94,15 +100,15 @@ class StatisticsFragment : Fragment() {
                         }
                     }
                 }
-                launch {
-                    viewModel.summonerMatchesState.collect {
-                        when(it) {
-                            is Resource.Success -> {
-                                setMatchHistoryUI(it.data)
-                            }
-                        }
-                    }
-                }
+//                launch {
+//                    viewModel.summonerMatchesState.collect {
+//                        when(it) {
+//                            is Resource.Success -> {
+//                                setMatchHistoryUI(it.data)
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }
@@ -132,8 +138,8 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-    private fun setMatchHistoryUI(list:List<Match>) {
-        val adapter = binding.rcMatchHistory.adapter as MatchHistoryAdapter
-        adapter.submitList(list)
-    }
+//    private fun setMatchHistoryUI(list:List<Match>) {
+//        val adapter = binding.rcMatchHistory.adapter as MatchHistoryAdapter
+//        adapter.submitList(list)
+//    }
 }

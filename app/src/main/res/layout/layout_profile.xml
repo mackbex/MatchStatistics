@@ -8,21 +8,10 @@
         <import type="java.util.List"/>
         <import type="com.match.statistics.domain.model.lol.League"/>
 
-        <variable
-            name="profileImageUrl"
-            type="java.lang.String" />
-
-        <variable
-            name="level"
-            type="java.lang.Integer" />
-
-        <variable
-            name="name"
-            type="java.lang.String" />
-
-        <variable
-            name="leagues"
-            type="List&lt;League>" />
+        <variable name="profileImageUrl" type="java.lang.String" />
+        <variable name="level" type="java.lang.Integer" />
+        <variable name="name" type="java.lang.String" />
+        <variable name="leagues" type="List&lt;League>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageView"
-            app:profileImageUrl="@{profileImageUrl}"
+            app:view_icon="@{profileImageUrl}"
             tools:src="@color/darkish_pink" />
 
 

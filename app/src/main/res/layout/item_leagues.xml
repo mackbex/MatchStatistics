@@ -19,6 +19,7 @@
             android:layout_marginHorizontal="4dp"
             android:clickable="true"
             android:focusable="true"
+            app:cardBackgroundColor="@color/white"
             >
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

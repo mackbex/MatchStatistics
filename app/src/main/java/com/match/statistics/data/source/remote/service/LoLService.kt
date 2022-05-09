@@ -7,13 +7,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-/**
- * 기업정보 검색 서비스
- */
 interface LoLService {
 
     companion object {
         const val BASE_URL_V1 = "https://codingtest.op.gg/api/"
+        const val MATCH_PAGE_SIZE=20
     }
 
     @GET("summoner/{id}")

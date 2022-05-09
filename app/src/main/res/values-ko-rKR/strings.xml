@@ -8,5 +8,8 @@
     <string name="title_analysis_wl">%d승 %d패</string>
     <string name="title_analysis_most_winrates">모스트 승률</string>
     <string name="title_analysis_position">포지션</string>
+    <string name="title_match_win">승</string>
+    <string name="title_match_loss">패</string>
+    <string name="title_match_kill_contribution">킬관여</string>
 </resources>
 

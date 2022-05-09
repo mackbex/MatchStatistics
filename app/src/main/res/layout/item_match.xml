@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="java.util.List" />
+
+        <import type="com.match.statistics.util.UtilKt" />
+
         <variable
             name="match"
             type="com.match.statistics.domain.model.lol.Match" />
@@ -20,14 +25,16 @@
             android:id="@+id/layout_result"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:background="@color/soft_blue"
-            app:layout_constraintStart_toStartOf="parent">
+            android:background="@{match.isWin ? @color/soft_blue : @color/darkish_pink}"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:background="@color/soft_blue">
 
             <TextView
                 android:id="@+id/tv_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
+                android:text="@{match.isWin ? @string/title_match_win : @string/title_match_loss}"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -69,11 +76,6 @@
             app:layout_constraintStart_toEndOf="@+id/layout_result"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_champion"
@@ -88,10 +90,11 @@
                     android:layout_height="40dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerInside"
-                    android:src="@color/soft_blue"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/circleImageView" />
+                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    app:view_icon="@{match.championImageUrl}"
+                    tools:src="@color/soft_blue" />
 
                 <TextView
                     android:layout_width="30dp"
@@ -113,7 +116,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     app:layout_constraintStart_toEndOf="@+id/img_champion"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:peak_icons="@{match.peaksImageUrlList}"
+                    app:spell_icons="@{match.spellsImageUrlList}">
 
                     <TableRow android:layout_marginBottom="2dp">
 
@@ -121,10 +126,11 @@
                             android:layout_width="19dp"
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
-                            android:src="@color/soft_blue"
+                            android:tag="SPELL"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
+                            tools:src="@color/soft_blue" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="19dp"
@@ -132,10 +138,11 @@
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
                             android:scaleType="centerInside"
-                            android:src="@color/soft_blue"
+                            android:tag="PEAK"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/circleImageView" />
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            tools:src="@color/soft_blue" />
                     </TableRow>
 
                     <TableRow>
@@ -144,10 +151,11 @@
                             android:layout_width="19dp"
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
-                            android:src="@color/soft_blue"
+                            android:tag="SPELL"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
+                            tools:src="@color/soft_blue" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="19dp"
@@ -155,10 +163,11 @@
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
                             android:scaleType="centerInside"
-                            android:src="@color/soft_blue"
+                            android:tag="PEAK"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/circleImageView" />
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            tools:src="@color/soft_blue" />
                     </TableRow>
                 </TableLayout>
 
@@ -181,6 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:includeFontPadding="true"
+                    android:text="@{@string/title_match_kill_contribution(match.contributionForKillRate)}"
                     android:textColor="@color/gunmetal"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/tv_kda"
@@ -191,6 +201,7 @@
                     android:id="@+id/tv_rank_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{match.gameType}"
                     android:textColor="@color/cool_grey"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -218,49 +229,55 @@
 
                 <TableLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    >
 
-                    <TableRow>
+                    <TableRow
+                        app:item_icons="@{match.itemsImageUrlList}"
+                        >
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -268,8 +285,7 @@
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:src="@color/cool_grey"
+                            android:src="@color/pale_grey_two"
                             app:shapeAppearanceOverlay="@style/circleImageView" />
                     </TableRow>
                 </TableLayout>
@@ -277,15 +293,14 @@
                 <TextView
                     android:layout_width="65dp"
                     android:layout_height="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:background="@drawable/bg_maximum_kill"
-                    tools:text="Quadra Kill"
-                    android:textSize="10sp"
                     android:gravity="center"
                     android:textColor="@color/darkish_pink"
-                    />
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Quadra Kill" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
