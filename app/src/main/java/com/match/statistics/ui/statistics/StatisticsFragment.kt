@@ -42,7 +42,9 @@ class StatisticsFragment : Fragment() {
             viewModel = this@StatisticsFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
 
+            layoutProfile.binding.rcRankRecord.setHasFixedSize(true)
             layoutProfile.binding.rcRankRecord.adapter = ProfileAdapter().apply {
+
                 setPostInterface { league, binding ->
                     binding.root.setOnClickListener {
                         Snackbar.make(binding.root, league.tier, Snackbar.LENGTH_SHORT).show()
@@ -50,6 +52,7 @@ class StatisticsFragment : Fragment() {
                 }
             }
 
+//            rcMatchHistory.setHasFixedSize(true)
             rcMatchHistory.adapter = MatchHistoryAdapter()
 
             layoutProfile.binding.btnRefresh.setOnClickListener {
