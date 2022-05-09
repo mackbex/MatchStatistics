@@ -6,9 +6,10 @@ data class Match(
     val championImageUrl:String,
     val spellsImageUrlList:List<String>,
     val itemsImageUrlList:List<String>,
+    val wardIconUrl:String,
     val createDate:Long,
     val gameType:String,
-    val gameLength:Int,
+    val gameLength:String,
     val isWin:Boolean,
     val peaksImageUrlList:List<String>,
     val kill:Int,
@@ -16,4 +17,5 @@ data class Match(
     val assist:Int,
     val opScoreBadge:String,
     val contributionForKillRate:String,
+    val largestMultiKillString:String
 )

@@ -10,6 +10,9 @@ import com.match.statistics.util.wrapper.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class MatchPagingSource @Inject constructor(
@@ -28,6 +31,7 @@ class MatchPagingSource @Inject constructor(
         return@withContext try {
             when(val matches = dataSource.getSummonerMatches(summonerName, page)) {
                 is Resource.Success -> {
+
                     LoadResult.Page(
                         data = matches.data.mapToDomain(),
                         prevKey = null,
@@ -42,5 +46,4 @@ class MatchPagingSource @Inject constructor(
             return@withContext LoadResult.Error(e)
         }
     }
-
 }

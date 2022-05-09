@@ -12,5 +12,13 @@
     <string name="title_match_win">W</string>
     <string name="title_match_loss">L</string>
     <string name="title_match_kill_contribution">Kill contribution %s</string>
+    <string name="title_match_badge_ace" translatable="false">ACE</string>
+    <string name="title_match_badge_mvp" translatable="false">MVP</string>
+    <string name="date_unit_recent">Recent</string>
+    <string name="date_unit_second"> Sec(s) ago</string>
+    <string name="date_unit_minute"> Min(s) ago</string>
+    <string name="date_unit_day"> Day(s) ago</string>
+    <string name="date_unit_hour"> Hour(s) ago</string>
+    <string name="date_unit_yesterday">Yesterday</string>
 
 </resources>

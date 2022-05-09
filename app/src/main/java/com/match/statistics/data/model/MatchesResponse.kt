@@ -32,7 +32,8 @@ data class GameModel(
     @SerializedName("peak")
     val peak:List<String>,
     @SerializedName("stats")
-    val stats:StatsModel
+    val stats:StatsModel,
+
 )
 
 data class GameChampionModel(
@@ -67,6 +68,8 @@ data class GeneralModel(
     val opScoreBadge:String,
     @SerializedName("contributionForKillRate")
     val contributionForKillRate:String,
+    @SerializedName("largestMultiKillString")
+    val largestMultiKillString:String
 )
 
 data class ChampionModel(
@@ -95,17 +98,19 @@ fun MatchesResponse.mapToDomain():List<Match> {
             gameId = it.gameId,
             championImageUrl = it.champion.imageUrl,
             spellsImageUrlList = it.spells.map { spell -> spell.imageUrl },
-            itemsImageUrlList = it.items.map { item -> item.imageUrl },
+            itemsImageUrlList = it.items.dropLast(1).map { item -> item.imageUrl },
+            wardIconUrl = it.items.last().imageUrl,
             createDate = it.createDate,
             gameType = it.gameType,
-            gameLength = it.gameLength,
+            gameLength = it.gameLength.toString(),
             isWin = it.isWin,
             peaksImageUrlList = it.peak,
             kill = it.stats.general.kill,
             death = it.stats.general.death,
             assist = it.stats.general.assist,
             opScoreBadge = it.stats.general.opScoreBadge,
-            contributionForKillRate = it.stats.general.contributionForKillRate
+            contributionForKillRate = it.stats.general.contributionForKillRate,
+            largestMultiKillString = it.stats.general.largestMultiKillString
         )
     }
 }

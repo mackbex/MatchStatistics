@@ -68,7 +68,7 @@ class StatisticsFragment : Fragment() {
      */
     private fun initStates() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
 
                 launch {
                     viewModel.summonerNameState.collect{
@@ -100,15 +100,6 @@ class StatisticsFragment : Fragment() {
                         }
                     }
                 }
-//                launch {
-//                    viewModel.summonerMatchesState.collect {
-//                        when(it) {
-//                            is Resource.Success -> {
-//                                setMatchHistoryUI(it.data)
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
     }

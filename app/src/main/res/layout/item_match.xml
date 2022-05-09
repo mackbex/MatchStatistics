@@ -6,7 +6,7 @@
     <data>
 
         <import type="java.util.List" />
-
+        <import type="android.view.View" />
         <import type="com.match.statistics.util.UtilKt" />
 
         <variable
@@ -63,6 +63,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/border"
+                android:text="@{String.format(`%02d`,Integer.parseInt(match.gameLength) / 60) + `:` + String.format(`%02d`,Integer.parseInt(match.gameLength) % 60)}"
                 tools:text="38:45" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -89,7 +90,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:adjustViewBounds="true"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitCenter"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearanceOverlay="@style/circleImageView"
@@ -108,7 +109,27 @@
                     app:layout_constraintEnd_toEndOf="@id/img_champion"
                     app:layout_constraintStart_toStartOf="@id/img_champion"
                     app:layout_constraintTop_toTopOf="@id/img_champion"
-                    tools:text="MVP" />
+                    tools:text="MVP"
+                    android:text="@string/title_match_badge_mvp"
+                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`MVP`) ? View.VISIBLE : View.GONE}"
+                    />
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="28dp"
+                    android:background="@drawable/bg_ace"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/img_champion"
+                    app:layout_constraintStart_toStartOf="@id/img_champion"
+                    app:layout_constraintTop_toTopOf="@id/img_champion"
+                    tools:text="ACE"
+                    android:text="@string/title_match_badge_ace"
+                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`ACE`) ? View.VISIBLE : View.GONE}"
+                    />
 
                 <TableLayout
                     android:id="@+id/table_spells"
@@ -116,9 +137,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     app:layout_constraintStart_toEndOf="@+id/img_champion"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:peak_icons="@{match.peaksImageUrlList}"
-                    app:spell_icons="@{match.spellsImageUrlList}">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TableRow android:layout_marginBottom="2dp">
 
@@ -126,10 +145,10 @@
                             android:layout_width="19dp"
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
-                            android:tag="SPELL"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner"
+                            app:view_icon="@{match.spellsImageUrlList.size() > 0 ? match.spellsImageUrlList[0] : null}"
                             tools:src="@color/soft_blue" />
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -137,8 +156,8 @@
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:tag="PEAK"
+                            android:scaleType="fitCenter"
+                            app:view_icon="@{match.peaksImageUrlList.size() > 0 ? match.peaksImageUrlList[0] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/circleImageView"
@@ -151,7 +170,7 @@
                             android:layout_width="19dp"
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
-                            android:tag="SPELL"
+                            app:view_icon="@{match.spellsImageUrlList.size() > 1 ? match.spellsImageUrlList[1] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner"
@@ -162,8 +181,8 @@
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
-                            android:scaleType="centerInside"
-                            android:tag="PEAK"
+                            android:scaleType="fitCenter"
+                            app:view_icon="@{match.peaksImageUrlList.size() > 1 ? match.peaksImageUrlList[1] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/circleImageView"
@@ -182,6 +201,9 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@id/table_spells"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:kills="@{match.kill}"
+                    app:deaths="@{match.death}"
+                    app:assists="@{match.assist}"
                     tools:text="88 / 88 / 88" />
 
                 <TextView
@@ -217,6 +239,7 @@
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_rank_type"
+                    android:text="@{UtilKt.DateConvert(match.createDate, context)}"
                     tools:text="2분 전" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -235,49 +258,52 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     >
 
-                    <TableRow
-                        app:item_icons="@{match.itemsImageUrlList}"
-                        >
-
+                    <TableRow>
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 0 ? match.itemsImageUrlList[0] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 1 ? match.itemsImageUrlList[1] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 2 ? match.itemsImageUrlList[2] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 3 ? match.itemsImageUrlList[3] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 4 ? match.itemsImageUrlList[4] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.itemsImageUrlList.size() > 5 ? match.itemsImageUrlList[5] : null }"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner" />
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -285,7 +311,8 @@
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
                             android:adjustViewBounds="true"
-                            android:src="@color/pale_grey_two"
+                            tools:src="@color/pale_grey_two"
+                            app:view_icon="@{match.wardIconUrl}"
                             app:shapeAppearanceOverlay="@style/circleImageView" />
                     </TableRow>
                 </TableLayout>
@@ -293,13 +320,14 @@
                 <TextView
                     android:layout_width="65dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/bg_maximum_kill"
+                    android:background="@{!match.largestMultiKillString.empty ? @drawable/bg_maximum_kill : null }"
                     android:gravity="center"
                     android:textColor="@color/darkish_pink"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:text="@{match.largestMultiKillString}"
                     tools:text="Quadra Kill" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

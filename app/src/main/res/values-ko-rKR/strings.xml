@@ -11,5 +11,11 @@
     <string name="title_match_win">승</string>
     <string name="title_match_loss">패</string>
     <string name="title_match_kill_contribution">킬관여</string>
+    <string name="date_unit_recent">지금 막</string>
+    <string name="date_unit_second">초 전</string>
+    <string name="date_unit_minute">분 전</string>
+    <string name="date_unit_day">일 전</string>
+    <string name="date_unit_hour">시간 전</string>
+    <string name="date_unit_yesterday">어제</string>
 </resources>
 

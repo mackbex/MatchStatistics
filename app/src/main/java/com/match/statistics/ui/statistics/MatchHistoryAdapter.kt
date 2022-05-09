@@ -39,15 +39,11 @@ class MatchHistoryAdapter : PagingDataAdapter<Match, MatchHistoryAdapter.ViewHol
         this.listener = listener
     }
 
-
-
     inner class ViewHolder(private val binding: ItemMatchBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(match: Match) {
             binding.setVariable(BR.match, match)
             listener?.invoke(match, binding)
             binding.executePendingBindings()
-
-            binding
         }
     }
 

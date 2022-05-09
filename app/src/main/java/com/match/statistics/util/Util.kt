@@ -2,6 +2,7 @@ package com.match.statistics.util
 
 import android.content.Context
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.match.statistics.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,9 +24,14 @@ fun modifyToValidUrl(url:String):String {
     }
 }
 
-fun convertTimestampToDateString(timestamp:Long, format:String):String {
-    val sdf = SimpleDateFormat(format)
-    val date = sdf.format(timestamp)
-
-    return date.toString()
+fun DateConvert(time:Long, context:Context): String {
+    return when (val diff = (Date().time / 1000 - time) / 1000) {
+        in 0 until 10 -> context.getString(R.string.date_unit_recent)
+        in 10 until 60 -> "${diff}${context.getString(R.string.date_unit_second)}"
+        in 60 until 60 * 60 -> "${diff / 60}${context.getString(R.string.date_unit_minute)}"
+        in 60 * 60 until 60 * 60 * 24 -> "${diff / (60 * 60)}${context.getString(R.string.date_unit_hour)}"
+        in 60 * 60 * 24 until 60 * 60 * 48 -> context.getString(R.string.date_unit_yesterday)
+        in 60 * 60 * 48 until 60 * 60 * 24 * 7 -> "${diff / (60 * 60 * 24)}${context.getString(R.string.date_unit_day)}"
+        else -> SimpleDateFormat("MM.dd", Locale.getDefault()).format(time)
+    }
 }

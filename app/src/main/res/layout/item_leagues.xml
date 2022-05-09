@@ -105,7 +105,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_circle_pale"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_arrow_right"
                     android:contentDescription="Btn move right" />
