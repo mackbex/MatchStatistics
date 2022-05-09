@@ -1,6 +1,7 @@
 package com.match.statistics.ui.statistics
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +10,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.match.statistics.databinding.FragmentStatisticsBinding
 import com.match.statistics.domain.model.lol.Analysis
-import com.match.statistics.domain.model.lol.Match
 import com.match.statistics.domain.model.lol.Summoner
 import com.match.statistics.ui.custom.profile.ProfileAdapter
-import com.match.statistics.util.wrapper.Resource
 import com.match.statistics.util.autoCleared
+import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -52,13 +52,23 @@ class StatisticsFragment : Fragment() {
                 }
             }
 
-//            rcMatchHistory.setHasFixedSize(true)
+            rcMatchHistory.setHasFixedSize(true)
             rcMatchHistory.adapter = MatchHistoryAdapter()
+
+            //Test
+            rcMatchHistory.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val visibleItemCount: Int =
+                        (rcMatchHistory.layoutManager as LinearLayoutManager).findLastVisibleItemPosition() - (rcMatchHistory.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    Log.d("TEST","##visible match count : $visibleItemCount")
+                }
+            })
 
             layoutProfile.binding.btnRefresh.setOnClickListener {
                 with(this@StatisticsFragment.viewModel) {
                     getUserProfile(curSummonerName)
-//                    getMatches(curSummonerName)
                 }
             }
         }
@@ -78,11 +88,10 @@ class StatisticsFragment : Fragment() {
                         when(it) {
                             is Resource.Success -> {
                                 viewModel.curSummonerName = it.data
-                                viewModel.getUserProfile(it.data)
-                                viewModel.getMatches(it.data).collectLatest {
-                                    (binding.rcMatchHistory.adapter as MatchHistoryAdapter).submitData(it)
-                                }
-//                                viewModel.getMatches(it.data)
+//                                viewModel.getUserProfile(it.data)
+//                                viewModel.getMatches(it.data).collectLatest {
+//                                    (binding.rcMatchHistory.adapter as MatchHistoryAdapter).submitData(it)
+//                                }
                             }
                             is Resource.Failure -> {
                                 // TODO: Back to Login View.
@@ -94,10 +103,17 @@ class StatisticsFragment : Fragment() {
                 launch {
                     viewModel.summonerProfileState.collect {
                         when(it) {
-                            is Resource.Success -> {
-                                setProfileUI(it.data.summoner)
-                                it.data.analysis?.let { analysis ->
-                                    setAnalysisUI(analysis)
+//                            is Resource.Success -> {
+//                                setProfileUI(it.data.summoner)
+//                                it.data.analysis?.let { analysis ->
+//                                    setAnalysisUI(analysis)
+//                                }
+//                            }
+                            is Resource.Loading -> {
+                                with(binding.layoutProfile.binding) {
+                                    layoutItems.visibility = View.INVISIBLE
+                                    shimmerLayout.visibility = View.VISIBLE
+                                    shimmerLayout.startShimmer()
                                 }
                             }
                         }
