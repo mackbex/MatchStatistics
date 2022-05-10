@@ -22,8 +22,8 @@ class LoLUserRepositoryImpl @Inject constructor(
     /**
      * 롤 계정 정보 조회
      */
-    override suspend fun getSummonerInfo(userId:String) = withContext(defaultDispatcher) {
-        return@withContext when(val res = loLDataSource.getSummonerProfile(userId)) {
+    override suspend fun getSummonerInfo(summonerName:String) = withContext(defaultDispatcher) {
+        return@withContext when(val res = loLDataSource.getSummonerProfile(summonerName)) {
             is Resource.Success -> Resource.Success(res.data.mapToDomain().apply {
                 this.leagues.map {
                     it.winRate = (it.wins.toFloat() / (it.wins + it.losses) * 100).toInt()
