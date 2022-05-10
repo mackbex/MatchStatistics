@@ -85,7 +85,7 @@
             android:scaleType="center"
             app:fabCustomSize="40dp"
             app:ensureMinTouchTargetSize="false"
-            android:visibility="gone"
+            android:visibility="invisible"
             tools:visibility="visible"
             app:tint="@color/gunmetal"
             app:layout_constraintRight_toRightOf="parent" />
