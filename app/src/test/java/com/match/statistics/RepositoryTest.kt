@@ -27,7 +27,7 @@ class RepositoryTest {
         var match = loLDataSource.getSummonerMatches("genetory")
         Assert.assertTrue(match is Resource.Success<*>)
 
-        for(i in 0 until 100) {
+        for(i in 0 until 10) {
             val date = (match as Resource.Success).data.games.last().createDate
             match = loLDataSource.getSummonerMatches("genetory", date.toString())
             Assert.assertTrue(match is Resource.Success<*>)
