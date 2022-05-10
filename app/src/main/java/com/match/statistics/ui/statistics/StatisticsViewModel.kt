@@ -1,5 +1,7 @@
 package com.match.statistics.ui.statistics
 
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -34,7 +36,7 @@ class StatisticsViewModel @Inject constructor(
     }
 
     /**
-     * 롤 프로필 조회
+     * 롤+ 프로필 조회
      */
     fun getUserProfile(userId:String) {
         summonerProfileState.value = Resource.Loading
@@ -43,6 +45,9 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    fun test(view:View) {
+        Log.d("test","##TESET")
+    }
     /**
      * 매치 조회
      */

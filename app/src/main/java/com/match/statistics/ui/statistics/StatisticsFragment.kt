@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.match.statistics.databinding.FragmentStatisticsBinding
 import com.match.statistics.domain.model.lol.Analysis
@@ -65,14 +67,35 @@ class StatisticsFragment : Fragment() {
                         footer = PagingLoadStateAdapter(this)
                     )
                 }
+
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+
+                        val positionView = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                        if (positionView > 0) {
+                            if(!binding.fabScrollTop.isShown) {
+                                binding.fabScrollTop.show()
+                            }
+                        } else  {
+                            if(binding.fabScrollTop.isShown) {
+                                binding.fabScrollTop.hide()
+                            }
+                        }
+                    }
+                })
             }
 
             layoutProfile.binding.btnRefresh.setOnClickListener {
                 with(this@StatisticsFragment.viewModel) {
-                    (layoutProfile.binding.rcRankRecord.adapter as LeagueAdapter).submitList(null)
                     getUserProfile(curSummonerName)
-                    matchHistoryAdapter.refresh()
                 }
+            }
+
+            fabScrollTop.setOnClickListener {
+                rcMatchHistory.scrollToPosition(0)
+                appBarLayout.setExpanded(true, true)
             }
         }
 
@@ -109,6 +132,10 @@ class StatisticsFragment : Fragment() {
                                 it.data.analysis?.let { analysis ->
                                     setAnalysisUI(analysis)
                                 }
+                            }
+                            is Resource.Loading -> {
+                                (binding.layoutProfile.binding.rcRankRecord.adapter as LeagueAdapter).submitList(null)
+                                matchHistoryAdapter.refresh()
                             }
                         }
                     }

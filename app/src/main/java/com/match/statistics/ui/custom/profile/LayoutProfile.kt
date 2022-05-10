@@ -66,6 +66,7 @@ class LayoutProfile : ConstraintLayout {
     fun setViewModel(viewModel: StatisticsViewModel) {
         binding.viewModel = viewModel
     }
+
     
     companion object {
 
