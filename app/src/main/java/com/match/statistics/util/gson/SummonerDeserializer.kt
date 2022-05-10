@@ -8,7 +8,7 @@ import java.lang.Exception
 import java.lang.reflect.Type
 
 /**
- * Gson 커스텀 Deserializer
+ * Gson 커스텀 Deserializer (사용안함
  */
 class SummonerDeserializer: JsonDeserializer<SummonerModel> {
 
