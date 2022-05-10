@@ -14,15 +14,15 @@ class UserInfoUseCase @Inject constructor(
     /**
      * 롤 아이디 조회(로그인 시 사용)
      */
-    suspend fun getLolSummonerName() = loLUserRepository.getUserId()
+    suspend fun getLolSummonerName() = loLUserRepository.getSummonerName()
 
     /**
      * 롤 게임 정보 조회
      */
-    suspend fun getLoLSummonerInfo(userId:String):Resource<SummonerInfo> {
+    suspend fun getLoLSummonerInfo(summonerName:String):Resource<SummonerInfo> {
 
-        val summoner = loLUserRepository.getSummonerInfo(userId)
-        val analysis = loLStatisticsRepository.getGameAnalysis(userId)
+        val summoner = loLUserRepository.getSummonerInfo(summonerName)
+        val analysis = loLStatisticsRepository.getGameAnalysis(summonerName)
 
         return when(summoner) {
             is Resource.Success -> {

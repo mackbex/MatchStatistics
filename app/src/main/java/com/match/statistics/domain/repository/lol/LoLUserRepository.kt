@@ -5,5 +5,5 @@ import com.match.statistics.domain.model.lol.Summoner
 
 interface LoLUserRepository {
     suspend fun getSummonerInfo(summonerName:String) : Resource<Summoner>
-    suspend fun getUserId() : Resource<String>
+    suspend fun getSummonerName() : Resource<String>
 }

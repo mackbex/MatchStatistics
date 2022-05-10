@@ -38,7 +38,7 @@ class LoLUserRepositoryImpl @Inject constructor(
      * 유저 아이디 가져옴(prepare Local dao)
      * 테스트용으로 mainActivity에서 인포 저장
      */
-    override suspend fun getUserId() = withContext(defaultDispatcher) {
+    override suspend fun getSummonerName() = withContext(defaultDispatcher) {
         val storedId = context.getSharedPreferences(SHARED_PREFERENCE_USER_INFO, Context.MODE_PRIVATE).getString(SHARED_PREFERENCE_USER_ID, null)
         Resource.Success(if(storedId.isNullOrEmpty()) { "genetory" } else { storedId })
     }
