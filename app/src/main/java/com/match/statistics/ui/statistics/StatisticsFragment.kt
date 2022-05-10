@@ -71,10 +71,7 @@ class StatisticsFragment : Fragment() {
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
-
-                        val positionView = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-
-                        if (positionView > 0) {
+                        if ((layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() > 0) {
                             if(!binding.fabScrollTop.isShown) {
                                 binding.fabScrollTop.show()
                             }
