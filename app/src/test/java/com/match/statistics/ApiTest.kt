@@ -9,7 +9,7 @@ import org.junit.Assert
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class RepositoryTest {
+class ApiTest {
     private val okHttpClient by lazy { NetworkModule.provideOkHttpClient() }
     private val retrofit by lazy { NetworkModule.provideLoLRetrofit(okHttpClient) }
     private val lolService by lazy { NetworkModule.provideLolService(retrofit) }
