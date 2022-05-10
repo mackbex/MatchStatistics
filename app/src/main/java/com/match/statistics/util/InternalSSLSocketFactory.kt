@@ -7,7 +7,9 @@ import java.net.UnknownHostException
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 
-
+/**
+ * API 19 호환용 SSL 소켓 팩토리
+ */
 class InternalSSLSocketFactory(sslSocketFactory: SSLSocketFactory) : SSLSocketFactory() {
 
     private val mSSLSocketFactory: SSLSocketFactory = sslSocketFactory

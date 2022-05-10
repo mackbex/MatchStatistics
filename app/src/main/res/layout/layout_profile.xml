@@ -25,6 +25,14 @@
         android:background="@color/white"
         tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/err_failed_load_data"
+            android:textColor="@color/gunmetal"
+            android:gravity="center"
+            android:visibility="@{viewModel.summonerProfileState instanceof Resource.Failure ? View.VISIBLE : View.GONE}"
+            />
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_layout"
             android:layout_width="match_parent"
@@ -108,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/layout_profile_main"
-            android:visibility="@{viewModel.summonerProfileState instanceof Resource.Loading ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.summonerProfileState instanceof Resource.Success ? View.VISIBLE : View.GONE}"
 
             >
 
@@ -171,6 +179,7 @@
                 android:textSize="14sp"
                 app:backgroundTint="@color/soft_blue"
                 app:cornerRadius="20dp"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@id/tv_user_id"
                 app:layout_constraintTop_toBottomOf="@id/tv_user_id" />
 

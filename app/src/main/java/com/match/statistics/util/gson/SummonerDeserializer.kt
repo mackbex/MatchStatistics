@@ -7,6 +7,9 @@ import com.match.statistics.data.model.TierRankModel
 import java.lang.Exception
 import java.lang.reflect.Type
 
+/**
+ * Gson 커스텀 Deserializer
+ */
 class SummonerDeserializer: JsonDeserializer<SummonerModel> {
 
     override fun deserialize(

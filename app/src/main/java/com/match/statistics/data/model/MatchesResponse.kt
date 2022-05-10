@@ -3,6 +3,9 @@ package com.match.statistics.data.model
 import com.google.gson.annotations.SerializedName
 import com.match.statistics.domain.model.lol.Match
 
+/**
+ * 데이터 엔티티
+ */
 data class MatchesResponse(
     @SerializedName("games")
     val games:List<GameModel>,
@@ -92,6 +95,9 @@ data class PositionModel(
     val wins:String,
 )
 
+/**
+ * 도메인 매퍼
+ */
 fun MatchesResponse.mapToDomain():List<Match> {
     return this.games.map {
         Match(

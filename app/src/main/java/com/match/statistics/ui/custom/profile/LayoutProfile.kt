@@ -21,8 +21,10 @@ import com.match.statistics.domain.model.lol.League
 import com.match.statistics.ui.statistics.StatisticsViewModel
 import com.match.statistics.util.getLifeCycleOwner
 import com.match.statistics.util.getProgressbar
-import com.match.statistics.util.wrapper.Resource
 
+/**
+ * 게임 계정 정보 뷰
+ */
 class LayoutProfile : ConstraintLayout {
 
     constructor(context: Context): super(context)
@@ -70,7 +72,7 @@ class LayoutProfile : ConstraintLayout {
         @BindingAdapter("leagues")
         @JvmStatic
         fun bindLeagues(recyclerView: RecyclerView, leagues:  List<League>?) {
-            val adapter = recyclerView.adapter as ProfileAdapter
+            val adapter = recyclerView.adapter as LeagueAdapter
             adapter.submitList(leagues)
         }
 

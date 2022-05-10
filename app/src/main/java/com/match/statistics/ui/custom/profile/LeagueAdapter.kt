@@ -12,10 +12,12 @@ import com.match.statistics.R
 import com.match.statistics.databinding.ItemLeaguesBinding
 import com.match.statistics.domain.model.lol.League
 
-class ProfileAdapter : ListAdapter<League, ProfileAdapter.ViewHolder>(ItemDiffCallback()) {
+/**
+ * 리그 어뎁터
+ */
+class LeagueAdapter : ListAdapter<League, LeagueAdapter.ViewHolder>(ItemDiffCallback()) {
 
     private var listener: ((league: League, binding:ViewDataBinding) -> Unit)? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -47,11 +49,11 @@ class ProfileAdapter : ListAdapter<League, ProfileAdapter.ViewHolder>(ItemDiffCa
 
         private class ItemDiffCallback : DiffUtil.ItemCallback<League>() {
             override fun areItemsTheSame(oldItem: League, newItem: League): Boolean {
-                return oldItem == newItem
+                return oldItem.wins == newItem.losses && oldItem.losses == newItem.losses
             }
 
             override fun areContentsTheSame(oldItem: League, newItem: League): Boolean {
-                return oldItem.wins == newItem.losses && oldItem.losses == newItem.losses
+                return oldItem == newItem
             }
         }
     }

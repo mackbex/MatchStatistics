@@ -26,7 +26,9 @@ import com.match.statistics.ui.statistics.StatisticsViewModel
 import com.match.statistics.util.getLifeCycleOwner
 import com.match.statistics.util.getProgressbar
 
-
+/**
+ * 최근 게임 분석 뷰
+ */
 class LayoutAnalysis : ConstraintLayout {
 
     constructor(context: Context): super(context)

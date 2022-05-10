@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName
 import com.match.statistics.domain.model.lol.League
 import com.match.statistics.domain.model.lol.Summoner
 
+/**
+ * 데이터 엔티티
+ */
 data class SummonerResponse(
     @SerializedName("summoner")
     val summoner: SummonerModel
@@ -43,6 +46,9 @@ data class TierRankModel(
     val lp:Int
 )
 
+/**
+ * 도메인 매퍼
+ */
 fun SummonerResponse.mapToDomain() = Summoner(
     name = this.summoner.name,
     profileImageUrl = this.summoner.profileImageUrl,

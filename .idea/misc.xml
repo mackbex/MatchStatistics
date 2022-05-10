@@ -58,6 +58,7 @@
         <entry key="app/src/main/res/layout/item_match.xml" value="0.30439121756487025" />
         <entry key="app/src/main/res/layout/layout_analysis.xml" value="0.30219256434699715" />
         <entry key="app/src/main/res/layout/layout_match_load_state.xml" value="0.29846014492753625" />
+        <entry key="app/src/main/res/layout/layout_network_paging_state.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layout/layout_profile.xml" value="0.375" />
       </map>
     </option>

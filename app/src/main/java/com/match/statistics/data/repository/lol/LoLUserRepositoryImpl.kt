@@ -19,6 +19,9 @@ class LoLUserRepositoryImpl @Inject constructor(
     @AppModule.IODispatcher private val defaultDispatcher: CoroutineDispatcher
 ): LoLUserRepository {
 
+    /**
+     * 롤 계정 정보 조회
+     */
     override suspend fun getSummonerInfo(userId:String) = withContext(defaultDispatcher) {
         return@withContext when(val res = loLDataSource.getSummonerProfile(userId)) {
             is Resource.Success -> Resource.Success(res.data.mapToDomain().apply {
@@ -32,7 +35,8 @@ class LoLUserRepositoryImpl @Inject constructor(
     }
 
     /**
-     * prepare Local dao
+     * 유저 아이디 가져옴(prepare Local dao)
+     * 테스트용으로 mainActivity에서 인포 저장
      */
     override suspend fun getUserId() = withContext(defaultDispatcher) {
         val storedId = context.getSharedPreferences(SHARED_PREFERENCE_USER_INFO, Context.MODE_PRIVATE).getString(SHARED_PREFERENCE_USER_ID, null)

@@ -24,12 +24,18 @@ class StatisticsViewModel @Inject constructor(
         getUserId()
     }
 
+    /**
+     * 롤 계정 가져옴
+     */
     fun getUserId() {
         viewModelScope.launch {
             summonerNameState.value = userInfoUseCase.getLolSummonerName()
         }
     }
 
+    /**
+     * 롤 프로필 조회
+     */
     fun getUserProfile(userId:String) {
         summonerProfileState.value = Resource.Loading
         viewModelScope.launch {
@@ -37,6 +43,9 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * 매치 조회
+     */
     fun getMatches(userId:String, createDate:String? = null) = userInfoUseCase.getLoLMatches(userId, createDate).cachedIn(viewModelScope)
 
 }

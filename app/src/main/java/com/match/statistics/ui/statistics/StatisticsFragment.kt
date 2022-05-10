@@ -13,13 +13,19 @@ import com.google.android.material.snackbar.Snackbar
 import com.match.statistics.databinding.FragmentStatisticsBinding
 import com.match.statistics.domain.model.lol.Analysis
 import com.match.statistics.domain.model.lol.Summoner
-import com.match.statistics.ui.custom.profile.ProfileAdapter
+import com.match.statistics.ui.custom.profile.LeagueAdapter
+import com.match.statistics.util.PagingLoadStateAdapter
 import com.match.statistics.util.autoCleared
 import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+/**
+ * 메인 뷰.
+ */
 @AndroidEntryPoint
 class StatisticsFragment : Fragment() {
 
@@ -41,25 +47,31 @@ class StatisticsFragment : Fragment() {
             viewModel = this@StatisticsFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
 
-            layoutProfile.binding.rcRankRecord.setHasFixedSize(true)
-            layoutProfile.binding.rcRankRecord.adapter = ProfileAdapter().apply {
-                setPostInterface { league, binding ->
-                    binding.root.setOnClickListener {
-                        Snackbar.make(binding.root, league.tier, Snackbar.LENGTH_SHORT).show()
+            layoutProfile.binding.rcRankRecord.apply {
+                setHasFixedSize(true)
+                adapter = LeagueAdapter().apply {
+                    setPostInterface { league, binding ->
+                        binding.root.setOnClickListener {
+                            Snackbar.make(binding.root, league.tier, Snackbar.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
 
-            rcMatchHistory.setHasFixedSize(true)
-            rcMatchHistory.adapter = matchHistoryAdapter
-                .withLoadStateFooter(
-                footer = MatchLoadStateAdapter {}
-            )
+            rcMatchHistory.apply {
+                setHasFixedSize(true)
+                with(matchHistoryAdapter) {
+                    adapter = this.withLoadStateFooter(
+                        footer = PagingLoadStateAdapter(this)
+                    )
+                }
+            }
 
             layoutProfile.binding.btnRefresh.setOnClickListener {
                 with(this@StatisticsFragment.viewModel) {
-                    (layoutProfile.binding.rcRankRecord.adapter as ProfileAdapter).submitList(null)
+                    (layoutProfile.binding.rcRankRecord.adapter as LeagueAdapter).submitList(null)
                     getUserProfile(curSummonerName)
+                    matchHistoryAdapter.refresh()
                 }
             }
         }
@@ -75,14 +87,12 @@ class StatisticsFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
 
                 launch {
-                    viewModel.summonerNameState.collect{
-                        when(it) {
+                    viewModel.summonerNameState.collect {
+                        when (it) {
                             is Resource.Success -> {
                                 viewModel.curSummonerName = it.data
                                 viewModel.getUserProfile(it.data)
-                                viewModel.getMatches(it.data).collectLatest { pagingData ->
-                                    matchHistoryAdapter.submitData(pagingData)
-                                }
+                                getMatchLists(it.data)
                             }
                             is Resource.Failure -> {
                                 // TODO: Back to Login View.
@@ -93,13 +103,27 @@ class StatisticsFragment : Fragment() {
 
                 launch {
                     viewModel.summonerProfileState.collect {
-                        when(it) {
+                        when (it) {
                             is Resource.Success -> {
                                 setProfileUI(it.data.summoner)
                                 it.data.analysis?.let { analysis ->
                                     setAnalysisUI(analysis)
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getMatchLists(summonerName:String) {
+         viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                launch {
+                    viewModel.getMatches(summonerName).collectLatest { pagingData ->
+                        withContext(Dispatchers.Main) {
+                            matchHistoryAdapter.submitData(pagingData)
                         }
                     }
                 }

@@ -7,6 +7,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+
+/**
+ * Retrofit 서비스
+ */
 interface LoLService {
 
     companion object {

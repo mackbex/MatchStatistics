@@ -10,6 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.match.statistics.R
 
+/**
+ * TextView Ext. 제플린에 기재된 대로 kda 사이 / 는 Bold가 아님.
+ */
 @BindingAdapter("kills","deaths","assists")
 fun bindKda(textView: TextView, kills: Int = 0, deaths:Int = 0, assists:Int = 0) {
     textView.apply {

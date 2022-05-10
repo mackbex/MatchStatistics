@@ -13,6 +13,9 @@ import com.match.statistics.R
 import com.match.statistics.util.getProgressbar
 
 
+/**
+ * Glide Ext
+ */
 fun ImageView.glide(url:String?, endAction:(() -> Unit)? = null) {
 
     val holder = getProgressbar(this.context).also {

@@ -12,6 +12,9 @@ import com.match.statistics.R
 import com.match.statistics.databinding.ItemMatchBinding
 import com.match.statistics.domain.model.lol.Match
 
+/**
+ * 매치 기록 페이징 어뎁터
+ */
 class MatchHistoryAdapter : PagingDataAdapter<Match, MatchHistoryAdapter.ViewHolder>(ItemDiffCallback()) {
 
     private var listener: ((match: Match, binding:ViewDataBinding) -> Unit)? = null
@@ -45,11 +48,11 @@ class MatchHistoryAdapter : PagingDataAdapter<Match, MatchHistoryAdapter.ViewHol
 
     private class ItemDiffCallback : DiffUtil.ItemCallback<Match>() {
         override fun areItemsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem == newItem
+            return oldItem.gameId == newItem.gameId && oldItem.createDate == newItem.createDate
         }
 
         override fun areContentsTheSame(oldItem: Match, newItem: Match): Boolean {
-            return oldItem.gameId == newItem.gameId && oldItem.createDate == newItem.createDate
+            return oldItem == newItem
         }
     }
 }

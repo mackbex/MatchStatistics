@@ -66,7 +66,10 @@
         android:id="@+id/layout_statistics"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="@{viewModel.summonerProfileState instanceof Resource.Failure ? View.GONE : View.VISIBLE}"
+        >
+
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer_layout"

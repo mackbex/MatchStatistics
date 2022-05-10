@@ -23,6 +23,9 @@ class LoLStatisticsRepositoryImpl @Inject constructor(
     @AppModule.IODispatcher private val defaultDispatcher: CoroutineDispatcher
 ): LoLStatisticsRepository {
 
+    /**
+     * 매치 히스토리 조회
+     */
     override fun getMatches(summonerName:String, createDate:String?): Flow<PagingData<Match>> {
         return Pager(
             config = PagingConfig(
@@ -32,6 +35,9 @@ class LoLStatisticsRepositoryImpl @Inject constructor(
         ).flow
     }
 
+    /**
+     * 최근 N게임 분석
+     */
     override suspend fun getGameAnalysis(summonerName: String) = withContext(defaultDispatcher) {
         return@withContext when (val res =
             loLRemoteDataSource.getSummonerMatches(summonerName)) {

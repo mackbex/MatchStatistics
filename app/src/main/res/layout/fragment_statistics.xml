@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
+            app:itemAnimator="@{null}"
             android:orientation="vertical"
             android:visibility="@{viewModel.summonerProfileState instanceof Resource.Success ? View.VISIBLE : View.GONE}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -32,7 +32,9 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient() : OkHttpClient {
 
-
+        /**
+         * API 19 TLS 1.3 지원을 위한 InternalSSLFactory 적용
+         */
         Security.insertProviderAt(Conscrypt.newProvider(), 1)
 
         val tm: X509TrustManager = Conscrypt.getDefaultX509TrustManager()
@@ -72,7 +74,7 @@ object NetworkModule {
     @Provides
     @Named("LoL")
     fun provideLoLRetrofit(
-        okHttpClient: OkHttpClient) : Retrofit {
+        okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(LoLService.BASE_URL_V1)

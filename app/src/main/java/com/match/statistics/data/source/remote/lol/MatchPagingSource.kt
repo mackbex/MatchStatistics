@@ -1,5 +1,6 @@
 package com.match.statistics.data.source.remote.lol
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.match.statistics.data.model.mapToDomain
@@ -11,6 +12,9 @@ import kotlinx.coroutines.withContext
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
+/**
+ * 페이저용 데이터소스
+ */
 class MatchPagingSource @Inject constructor(
     private val dataSource: LoLDataSource,
     private val summonerName:String,
