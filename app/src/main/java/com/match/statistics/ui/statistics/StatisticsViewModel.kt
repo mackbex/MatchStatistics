@@ -3,13 +3,11 @@ package com.match.statistics.ui.statistics
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.match.statistics.domain.model.lol.Match
 import com.match.statistics.domain.model.lol.SummonerInfo
 import com.match.statistics.domain.usecase.UserInfoUseCase
 import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +17,6 @@ class StatisticsViewModel @Inject constructor(
 ):ViewModel() {
 
     val summonerProfileState = MutableStateFlow<Resource<SummonerInfo>>(Resource.Loading)
-    val summonerMatchesState = MutableStateFlow<Resource<List<Match>>>(Resource.Loading)
     val summonerNameState = MutableStateFlow<Resource<String>>(Resource.Loading)
     var curSummonerName:String = ""
 
@@ -34,6 +31,7 @@ class StatisticsViewModel @Inject constructor(
     }
 
     fun getUserProfile(userId:String) {
+        summonerProfileState.value = Resource.Loading
         viewModelScope.launch {
             summonerProfileState.value = userInfoUseCase.getLoLSummonerInfo(userId)
         }

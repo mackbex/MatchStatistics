@@ -1,6 +1,5 @@
 package com.match.statistics.domain.usecase
 
-import com.match.statistics.domain.model.lol.Summoner
 import com.match.statistics.domain.model.lol.SummonerInfo
 import com.match.statistics.domain.repository.lol.LoLStatisticsRepository
 import com.match.statistics.domain.repository.lol.LoLUserRepository

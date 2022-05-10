@@ -1,9 +1,7 @@
 package com.match.statistics.data.repository.lol
 
 import android.content.Context
-import com.match.statistics.data.source.remote.service.LoLService
 import com.match.statistics.di.AppModule
-import com.match.statistics.data.model.SummonerResponse
 import com.match.statistics.data.model.mapToDomain
 import com.match.statistics.data.source.remote.lol.LoLDataSource
 import com.match.statistics.domain.repository.lol.LoLUserRepository
@@ -14,7 +12,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import javax.net.ssl.SSLProtocolException
 
 class LoLUserRepositoryImpl @Inject constructor(
     @ApplicationContext private val context:Context,

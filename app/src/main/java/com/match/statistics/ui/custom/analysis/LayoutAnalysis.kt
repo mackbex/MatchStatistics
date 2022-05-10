@@ -1,7 +1,6 @@
 package com.match.statistics.ui.custom.analysis
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Spannable
@@ -11,8 +10,6 @@ import android.text.style.StyleSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
-import android.widget.TableLayout
-import android.widget.TableRow
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -25,6 +22,8 @@ import com.bumptech.glide.request.target.Target
 import com.match.statistics.R
 import com.match.statistics.databinding.LayoutAnalysisBinding
 import com.match.statistics.domain.model.lol.Champion
+import com.match.statistics.ui.statistics.StatisticsViewModel
+import com.match.statistics.util.getLifeCycleOwner
 import com.match.statistics.util.getProgressbar
 
 
@@ -35,6 +34,12 @@ class LayoutAnalysis : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int): super(context, attrs, defStyle)
 
     var binding: LayoutAnalysisBinding = LayoutAnalysisBinding.inflate(LayoutInflater.from(context), this, true)
+
+    init {
+        getLifeCycleOwner(this)?.let {
+            binding.lifecycleOwner = it
+        }
+    }
 
     var games:Int?
         get() =
@@ -103,6 +108,9 @@ class LayoutAnalysis : ConstraintLayout {
             binding.positionWinRate = value
         }
 
+    fun setViewModel(viewModel: StatisticsViewModel) {
+        binding.viewModel = viewModel
+    }
 
     companion object {
         @BindingAdapter("kda_ratio")
@@ -155,21 +163,10 @@ class LayoutAnalysis : ConstraintLayout {
             }
         }
 
-        @BindingAdapter("most_champions")
+        @BindingAdapter("most_champion")
         @JvmStatic
-        fun bindMostChampions(tableLayout: TableLayout, champions:List<Champion>?) {
-            champions?.forEachIndexed { index, champion ->
-                val iconRow = tableLayout.getChildAt(0) as TableRow
-                val winRateRow = tableLayout.getChildAt(1) as TableRow
-
-                setImage((iconRow.getChildAt(index) as ImageView), champion.imageUrl)
-                (winRateRow.getChildAt(index) as TextView).apply {
-                    text = "${champion.winRate}%"
-                    if(champion.winRate > 50) {
-                        setTextColor(ContextCompat.getColor(context, R.color.darkish_pink))
-                    }
-                }
-            }
+        fun bindMostChampions(imageView: ImageView, championUrl:String?) {
+            setImage(imageView, championUrl)
         }
 
         @BindingAdapter("most_position")

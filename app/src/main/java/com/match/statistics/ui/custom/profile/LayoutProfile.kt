@@ -18,7 +18,10 @@ import com.bumptech.glide.request.target.Target
 import com.match.statistics.R
 import com.match.statistics.databinding.LayoutProfileBinding
 import com.match.statistics.domain.model.lol.League
+import com.match.statistics.ui.statistics.StatisticsViewModel
+import com.match.statistics.util.getLifeCycleOwner
 import com.match.statistics.util.getProgressbar
+import com.match.statistics.util.wrapper.Resource
 
 class LayoutProfile : ConstraintLayout {
 
@@ -27,6 +30,12 @@ class LayoutProfile : ConstraintLayout {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int): super(context, attrs, defStyle)
 
     var binding: LayoutProfileBinding = LayoutProfileBinding.inflate(LayoutInflater.from(context), this, true)
+
+    init {
+        getLifeCycleOwner(this)?.let {
+            binding.lifecycleOwner = it
+        }
+    }
 
     var profileImageUrl:String?
         get() = binding.profileImageUrl
@@ -52,6 +61,10 @@ class LayoutProfile : ConstraintLayout {
             binding.leagues = value
         }
 
+    fun setViewModel(viewModel: StatisticsViewModel) {
+        binding.viewModel = viewModel
+    }
+    
     companion object {
 
         @BindingAdapter("leagues")

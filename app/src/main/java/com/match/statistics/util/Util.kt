@@ -1,6 +1,9 @@
 package com.match.statistics.util
 
 import android.content.Context
+import android.content.ContextWrapper
+import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.match.statistics.R
 import java.text.SimpleDateFormat
@@ -24,7 +27,21 @@ fun modifyToValidUrl(url:String):String {
     }
 }
 
-fun DateConvert(time:Long, context:Context): String {
+fun getLifeCycleOwner(view: View): LifecycleOwner? {
+    var context = view.context
+
+    while (context is ContextWrapper) {
+        if (context is LifecycleOwner) {
+            return context
+        }
+        context = context.baseContext
+    }
+
+    return null
+}
+
+
+fun dateConvert(time:Long, context:Context): String {
     return when (val diff = (Date().time / 1000 - time) / 1000) {
         in 0 until 10 -> context.getString(R.string.date_unit_recent)
         in 10 until 60 -> "${diff}${context.getString(R.string.date_unit_second)}"

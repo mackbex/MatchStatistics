@@ -20,5 +20,6 @@
     <string name="date_unit_day"> Day(s) ago</string>
     <string name="date_unit_hour"> Hour(s) ago</string>
     <string name="date_unit_yesterday">Yesterday</string>
+    <string name="btn_match_load_retry">Retry</string>
 
 </resources>

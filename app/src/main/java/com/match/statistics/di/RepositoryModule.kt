@@ -14,8 +14,8 @@ import dagger.hilt.components.SingletonComponent
 interface RepositoryModule {
 
     @Binds
-    fun bindStatisticsRepository(impl: LoLStatisticsRepositoryImpl): LoLStatisticsRepository
+    fun bindLolStatisticsRepository(impl: LoLStatisticsRepositoryImpl): LoLStatisticsRepository
 
     @Binds
-    fun bindUserRepository(impl: LoLUserRepositoryImpl): LoLUserRepository
+    fun bindLolUserRepository(impl: LoLUserRepositoryImpl): LoLUserRepository
 }

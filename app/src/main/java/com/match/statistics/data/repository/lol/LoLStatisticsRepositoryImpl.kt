@@ -3,9 +3,7 @@ package com.match.statistics.data.repository.lol
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.match.statistics.data.model.GameModel
 import com.match.statistics.di.AppModule
-import com.match.statistics.data.model.mapToDomain
 import com.match.statistics.data.source.remote.lol.LoLDataSource
 import com.match.statistics.data.source.remote.lol.MatchPagingSource
 import com.match.statistics.data.source.remote.service.LoLService.Companion.MATCH_PAGE_SIZE
@@ -27,7 +25,9 @@ class LoLStatisticsRepositoryImpl @Inject constructor(
 
     override fun getMatches(summonerName:String, createDate:String?): Flow<PagingData<Match>> {
         return Pager(
-            config = PagingConfig(pageSize = MATCH_PAGE_SIZE),
+            config = PagingConfig(
+                pageSize = MATCH_PAGE_SIZE
+            ),
             pagingSourceFactory = { MatchPagingSource(loLRemoteDataSource, summonerName, defaultDispatcher) }
         ).flow
     }

@@ -7,18 +7,14 @@ import androidx.databinding.ViewDataBinding
 import androidx.databinding.library.baseAdapters.BR
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.match.statistics.R
-import com.match.statistics.databinding.ItemLeaguesBinding
 import com.match.statistics.databinding.ItemMatchBinding
-import com.match.statistics.domain.model.lol.League
 import com.match.statistics.domain.model.lol.Match
 
 class MatchHistoryAdapter : PagingDataAdapter<Match, MatchHistoryAdapter.ViewHolder>(ItemDiffCallback()) {
 
     private var listener: ((match: Match, binding:ViewDataBinding) -> Unit)? = null
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

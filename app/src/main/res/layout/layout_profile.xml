@@ -6,24 +6,16 @@
     <data>
 
         <import type="java.util.List" />
-
         <import type="com.match.statistics.domain.model.lol.League" />
+        <import type="com.match.statistics.util.wrapper.Resource" />
+        <import type="android.view.View" />
 
-        <variable
-            name="profileImageUrl"
-            type="java.lang.String" />
+        <variable name="viewModel" type="com.match.statistics.ui.statistics.StatisticsViewModel" />
+        <variable name="profileImageUrl" type="java.lang.String" />
+        <variable name="level" type="java.lang.Integer" />
+        <variable name="name" type="java.lang.String" />
+        <variable name="leagues" type="List&lt;League>" />
 
-        <variable
-            name="level"
-            type="java.lang.Integer" />
-
-        <variable
-            name="name"
-            type="java.lang.String" />
-
-        <variable
-            name="leagues"
-            type="List&lt;League>" />
     </data>
 
 
@@ -37,9 +29,12 @@
             android:id="@+id/shimmer_layout"
             android:layout_width="match_parent"
             android:layout_height="251dp"
+            app:shimmer_auto_start="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="@{viewModel.summonerProfileState instanceof Resource.Loading ? View.VISIBLE : View.GONE}"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -82,13 +77,39 @@
                 app:layout_constraintStart_toStartOf="@id/shimmer_user_id"
                 app:layout_constraintTop_toBottomOf="@id/shimmer_user_id" />
 
+                <View
+                    android:id="@+id/shimmer_league_1"
+                    android:layout_width="240dp"
+                    android:layout_height="80dp"
+                    android:background="@color/shimmer_color"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <View
+                    android:id="@+id/shimmer_league_2"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:background="@color/shimmer_color"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toEndOf="@id/shimmer_league_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/layout_items"
+            android:id="@+id/layout_profile_main"
+            android:visibility="@{viewModel.summonerProfileState instanceof Resource.Loading ? View.GONE : View.VISIBLE}"
+
             >
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -165,6 +186,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:leagues="@{leagues}"
+                app:itemAnimator="@{null}"
                 tools:listitem="@layout/item_leagues" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

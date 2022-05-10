@@ -58,12 +58,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:text="@{String.format(`%02d`,Integer.parseInt(match.gameLength) / 60) + `:` + String.format(`%02d`,Integer.parseInt(match.gameLength) % 60)}"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/border"
-                android:text="@{String.format(`%02d`,Integer.parseInt(match.gameLength) / 60) + `:` + String.format(`%02d`,Integer.parseInt(match.gameLength) % 60)}"
                 tools:text="38:45" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -103,16 +103,15 @@
                     android:layout_marginTop="28dp"
                     android:background="@drawable/bg_mvp"
                     android:gravity="center"
+                    android:text="@string/title_match_badge_mvp"
                     android:textColor="@color/white"
                     android:textSize="10sp"
                     android:textStyle="bold"
+                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`MVP`) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@id/img_champion"
                     app:layout_constraintStart_toStartOf="@id/img_champion"
                     app:layout_constraintTop_toTopOf="@id/img_champion"
-                    tools:text="MVP"
-                    android:text="@string/title_match_badge_mvp"
-                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`MVP`) ? View.VISIBLE : View.GONE}"
-                    />
+                    tools:text="MVP" />
 
                 <TextView
                     android:layout_width="30dp"
@@ -120,16 +119,15 @@
                     android:layout_marginTop="28dp"
                     android:background="@drawable/bg_ace"
                     android:gravity="center"
+                    android:text="@string/title_match_badge_ace"
                     android:textColor="@color/white"
                     android:textSize="10sp"
                     android:textStyle="bold"
+                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`ACE`) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@id/img_champion"
                     app:layout_constraintStart_toStartOf="@id/img_champion"
                     app:layout_constraintTop_toTopOf="@id/img_champion"
-                    tools:text="ACE"
-                    android:text="@string/title_match_badge_ace"
-                    android:visibility="@{match.opScoreBadge.toUpperCase().equals(`ACE`) ? View.VISIBLE : View.GONE}"
-                    />
+                    tools:text="ACE" />
 
                 <TableLayout
                     android:id="@+id/table_spells"
@@ -157,10 +155,10 @@
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
-                            app:view_icon="@{match.peaksImageUrlList.size() > 0 ? match.peaksImageUrlList[0] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/circleImageView"
+                            app:view_icon="@{match.peaksImageUrlList.size() > 0 ? match.peaksImageUrlList[0] : null}"
                             tools:src="@color/soft_blue" />
                     </TableRow>
 
@@ -170,10 +168,10 @@
                             android:layout_width="19dp"
                             android:layout_height="19dp"
                             android:layout_marginHorizontal="1dp"
-                            app:view_icon="@{match.spellsImageUrlList.size() > 1 ? match.spellsImageUrlList[1] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/champion_spell_corner"
+                            app:view_icon="@{match.spellsImageUrlList.size() > 1 ? match.spellsImageUrlList[1] : null}"
                             tools:src="@color/soft_blue" />
 
                         <com.google.android.material.imageview.ShapeableImageView
@@ -182,10 +180,10 @@
                             android:layout_marginHorizontal="1dp"
                             android:adjustViewBounds="true"
                             android:scaleType="fitCenter"
-                            app:view_icon="@{match.peaksImageUrlList.size() > 1 ? match.peaksImageUrlList[1] : null}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/circleImageView"
+                            app:view_icon="@{match.peaksImageUrlList.size() > 1 ? match.peaksImageUrlList[1] : null}"
                             tools:src="@color/soft_blue" />
                     </TableRow>
                 </TableLayout>
@@ -199,11 +197,11 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="16sp"
                     android:textStyle="bold"
+                    app:assists="@{match.assist}"
+                    app:deaths="@{match.death}"
+                    app:kills="@{match.kill}"
                     app:layout_constraintStart_toEndOf="@id/table_spells"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:kills="@{match.kill}"
-                    app:deaths="@{match.death}"
-                    app:assists="@{match.assist}"
                     tools:text="88 / 88 / 88" />
 
                 <TextView
@@ -235,11 +233,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
+                    android:text="@{UtilKt.dateConvert(match.createDate, context)}"
                     android:textColor="@color/cool_grey"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_rank_type"
-                    android:text="@{UtilKt.DateConvert(match.createDate, context)}"
                     tools:text="2분 전" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -253,67 +251,67 @@
                 <TableLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    >
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TableRow>
+
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 0 ? match.itemsImageUrlList[0] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 1 ? match.itemsImageUrlList[1] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 2 ? match.itemsImageUrlList[2] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 3 ? match.itemsImageUrlList[3] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 4 ? match.itemsImageUrlList[4] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/champion_spell_corner"
                             app:view_icon="@{match.itemsImageUrlList.size() > 5 ? match.itemsImageUrlList[5] : null }"
-                            app:shapeAppearanceOverlay="@style/champion_spell_corner" />
+                            tools:src="@color/pale_grey_two" />
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="2dp"
                             android:adjustViewBounds="true"
-                            tools:src="@color/pale_grey_two"
+                            app:shapeAppearanceOverlay="@style/circleImageView"
                             app:view_icon="@{match.wardIconUrl}"
-                            app:shapeAppearanceOverlay="@style/circleImageView" />
+                            tools:src="@color/pale_grey_two" />
                     </TableRow>
                 </TableLayout>
 
@@ -322,12 +320,12 @@
                     android:layout_height="20dp"
                     android:background="@{!match.largestMultiKillString.empty ? @drawable/bg_maximum_kill : null }"
                     android:gravity="center"
+                    android:text="@{match.largestMultiKillString}"
                     android:textColor="@color/darkish_pink"
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="@{match.largestMultiKillString}"
                     tools:text="Quadra Kill" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
