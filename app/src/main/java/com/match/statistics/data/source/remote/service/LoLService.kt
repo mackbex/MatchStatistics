@@ -15,7 +15,7 @@ interface LoLService {
 
     companion object {
         const val BASE_URL_V1 = "https://codingtest.op.gg/api/"
-        const val MATCH_PAGE_SIZE=20
+        const val MATCH_PAGE_SIZE=10
     }
 
     @GET("summoner/{id}")

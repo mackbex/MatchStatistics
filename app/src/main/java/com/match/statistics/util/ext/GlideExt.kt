@@ -23,7 +23,7 @@ fun ImageView.glide(url:String?, endAction:(() -> Unit)? = null) {
     }
 
     Glide.with(this.context)
-        .load(url)
+        .load(url ?: kotlin.run { ColorDrawable(ContextCompat.getColor(this.context, R.color.pale_grey)) })
         .fitCenter()
         .error(ColorDrawable(ContextCompat.getColor(this.context, R.color.pale_grey)))
         .placeholder(holder)
