@@ -1,7 +1,7 @@
 package com.match.statistics.data.source.remote.lol
 
-import com.match.statistics.data.source.remote.BaseDataSource
 import com.match.statistics.data.source.remote.service.LoLService
+import com.match.statistics.util.getResult
 import javax.inject.Inject
 
 /**
@@ -9,7 +9,7 @@ import javax.inject.Inject
  */
 class LoLDataSource @Inject constructor(
     private val loLService: LoLService
-):BaseDataSource(){
+){
 
     /**
      * 롤 계정 정보 조회

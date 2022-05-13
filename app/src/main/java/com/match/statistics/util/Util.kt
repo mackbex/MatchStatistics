@@ -6,6 +6,8 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.match.statistics.R
+import com.match.statistics.util.wrapper.Resource
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,4 +53,22 @@ fun dateConvert(time:Long, context:Context): String {
         in 60 * 60 * 48 until 60 * 60 * 24 * 7 -> "${diff / (60 * 60 * 24)}${context.getString(R.string.date_unit_day)}"
         else -> SimpleDateFormat("MM.dd", Locale.getDefault()).format(time)
     }
+}
+
+
+suspend inline fun <T> getResult(crossinline call: suspend () -> Response<T>): Resource<T> {
+    try {
+        val response = call()
+        if (response.isSuccessful) {
+            val body = response.body()
+            if (body != null) return Resource.Success(body)
+        }
+        return error(" ${response.code()} ${response.message()}")
+    } catch (e: Exception) {
+        return error(e.message ?: e.toString())
+    }
+}
+
+fun <T> error(message: String): Resource<T> {
+    return Resource.Failure("Network call has failed for a following reason: $message")
 }
