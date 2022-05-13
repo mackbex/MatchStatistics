@@ -1,7 +1,7 @@
 package com.match.statistics.data.source.remote.lol
 
+import com.match.statistics.data.source.remote.getResult
 import com.match.statistics.data.source.remote.service.LoLService
-import com.match.statistics.util.getResult
 import javax.inject.Inject
 
 /**
