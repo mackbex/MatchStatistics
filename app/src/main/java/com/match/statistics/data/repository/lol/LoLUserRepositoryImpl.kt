@@ -8,6 +8,7 @@ import com.match.statistics.domain.repository.lol.LoLUserRepository
 import com.match.statistics.util.Constants.SHARED_PREFERENCE_USER_ID
 import com.match.statistics.util.Constants.SHARED_PREFERENCE_USER_INFO
 import com.match.statistics.util.wrapper.Resource
+import com.match.statistics.util.wrapper.map
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -23,14 +24,13 @@ class LoLUserRepositoryImpl @Inject constructor(
      * 롤 계정 정보 조회
      */
     override suspend fun getSummonerInfo(summonerName:String) = withContext(defaultDispatcher) {
-        return@withContext when(val res = loLDataSource.getSummonerProfile(summonerName)) {
-            is Resource.Success -> Resource.Success(res.data.mapToDomain().apply {
+        val res = loLDataSource.getSummonerProfile(summonerName)
+        return@withContext res.map {
+            it.mapToDomain().apply {
                 this.leagues.map {
                     it.winRate = (it.wins.toFloat() / (it.wins + it.losses) * 100).toInt()
                 }
-            })
-            is Resource.Failure -> Resource.Failure(res.msg)
-            else -> throw IllegalStateException()
+            }
         }
     }
 

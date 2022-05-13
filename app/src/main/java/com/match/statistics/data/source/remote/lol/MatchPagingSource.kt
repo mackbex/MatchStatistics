@@ -29,6 +29,7 @@ class MatchPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<String>) = withContext(defaultDispatcher) {
         val page = params.key
+
         return@withContext try {
             when(val matches = dataSource.getSummonerMatches(summonerName, page)) {
                 is Resource.Success -> {
