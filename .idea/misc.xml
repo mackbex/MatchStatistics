@@ -60,6 +60,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_company_detail.xml" value="0.3591485507246377" />
         <entry key="app/src/main/res/layout/fragment_company_search.xml" value="0.3591485507246377" />
+        <entry key="app/src/main/res/layout/fragment_statistics.xml" value="0.10182370820668693" />
+        <entry key="app/src/main/res/layout/layout_profile.xml" value="0.10182370820668693" />
       </map>
     </option>
   </component>
