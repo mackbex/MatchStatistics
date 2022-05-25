@@ -1,15 +1,16 @@
 package com.match.statistics.ui.statistics
 
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.match.statistics.domain.model.lol.Match
 import com.match.statistics.domain.model.lol.SummonerInfo
 import com.match.statistics.domain.usecase.UserInfoUseCase
 import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +22,8 @@ class StatisticsViewModel @Inject constructor(
     val summonerProfileState = MutableStateFlow<Resource<SummonerInfo>>(Resource.Loading)
     val summonerNameState = MutableStateFlow<Resource<String>>(Resource.Loading)
     var curSummonerName:String = ""
+    val matchState = MutableStateFlow<PagingData<Match>>(PagingData.empty())
+
 
     init {
         getUserId()
@@ -45,12 +48,14 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
-    fun test(view:View) {
-        Log.d("test","##TESET")
-    }
     /**
      * 매치 조회
      */
-    fun getMatches(userId:String, createDate:String? = null) = userInfoUseCase.getLoLMatches(userId, createDate).cachedIn(viewModelScope)
-
+    fun getMatchList(userId:String, createDate:String? = null) {
+        viewModelScope.launch {
+            userInfoUseCase.getLoLMatches(userId, createDate).cachedIn(viewModelScope).collectLatest {
+                matchState.value = it
+            }
+        }
+    }
 }

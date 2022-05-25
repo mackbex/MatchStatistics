@@ -112,12 +112,18 @@ class StatisticsFragment : Fragment() {
                             is Resource.Success -> {
                                 viewModel.curSummonerName = it.data
                                 viewModel.getUserProfile(it.data)
-                                getMatchLists(it.data)
+                                viewModel.getMatchList(it.data)
                             }
                             is Resource.Failure -> {
                                 // TODO: Back to Login View.
                             }
                         }
+                    }
+                }
+
+                launch {
+                    viewModel.matchState.collect {
+                        matchHistoryAdapter.submitData(it)
                     }
                 }
 
@@ -141,19 +147,6 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-    private fun getMatchLists(summonerName:String) {
-         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                launch {
-                    viewModel.getMatches(summonerName).collectLatest { pagingData ->
-                        withContext(Dispatchers.Main) {
-                            matchHistoryAdapter.submitData(pagingData)
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private fun setProfileUI(summoner: Summoner) {
         with(binding.layoutProfile) {
