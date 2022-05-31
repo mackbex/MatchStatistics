@@ -132,7 +132,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/circleImageView"
-                app:view_icon="@{profileImageUrl}"
+                app:profileImageUrl="@{profileImageUrl}"
                 tools:src="@color/darkish_pink" />
 
 

@@ -80,49 +80,24 @@ class LayoutProfile : ConstraintLayout {
         @BindingAdapter("profileImageUrl")
         @JvmStatic
         fun bindProfileImageUrl(imageView: ImageView, imgUrl: String?) {
+            loadImage(imgUrl, ColorDrawable(ContextCompat.getColor(imageView.context,R.color.pale_grey)), imageView)
+        }
+
+        @BindingAdapter("tierImage")
+        @JvmStatic
+        fun bindTierImage(imageView: ImageView, tierImage:String?) {
+            loadImage(tierImage, ContextCompat.getDrawable(imageView.context, R.drawable.bg_circle_pale), imageView)
+        }
+
+        private fun loadImage(imgUrl:String?, errorImg:Drawable?, imageView: ImageView) {
+
             val circularProgressDrawable = getProgressbar(imageView.context)
             circularProgressDrawable.start()
 
             Glide.with(imageView.context)
                 .load(imgUrl)
                 .fitCenter()
-                .error(ColorDrawable(ContextCompat.getColor(imageView.context,R.color.pale_grey)))
-                .placeholder(circularProgressDrawable)
-                .addListener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        circularProgressDrawable.stop()
-                        return false
-                    }
-
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        circularProgressDrawable.stop()
-                        return false
-                    }
-                })
-                .into(imageView)
-        }
-
-        @BindingAdapter("tierImage")
-        @JvmStatic
-        fun bindTierImage(imageView: ImageView, tierImage:String?) {
-            val circularProgressDrawable = getProgressbar(imageView.context)
-            circularProgressDrawable.start()
-
-            Glide.with(imageView.context)
-                .load(tierImage)
-                .fitCenter()
-                .placeholder(circularProgressDrawable)
+                .placeholder(errorImg)
                 .error(R.drawable.bg_circle_pale)
                 .addListener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(

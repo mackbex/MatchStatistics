@@ -206,9 +206,9 @@
                     android:maxLines="1"
                     android:textColor="@color/charcoal_grey"
                     android:textSize="14sp"
-                    app:assists="@{assists}"
-                    app:deaths="@{deaths}"
-                    app:kills="@{kills}"
+                    app:analysis_assists="@{assists}"
+                    app:analysis_deaths="@{deaths}"
+                    app:analysis_kills="@{kills}"
                     app:layout_constraintBottom_toTopOf="@id/tv_kda_ratio"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="5.9 / 6.8 / 14.1" />

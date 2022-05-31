@@ -142,7 +142,7 @@ class LayoutAnalysis : ConstraintLayout {
             }
         }
 
-        @BindingAdapter("kills","deaths","assists")
+        @BindingAdapter("analysis_kills","analysis_deaths","analysis_assists")
         @JvmStatic
         fun bindKda(textView: TextView, kills: Float = 0f, deaths:Float = 0f, assists:Float = 0f) {
             textView.apply {
