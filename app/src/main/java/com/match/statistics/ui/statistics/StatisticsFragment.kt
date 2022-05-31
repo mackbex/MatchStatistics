@@ -20,10 +20,7 @@ import com.match.statistics.util.PagingLoadStateAdapter
 import com.match.statistics.util.autoCleared
 import com.match.statistics.util.wrapper.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * 메인 뷰.

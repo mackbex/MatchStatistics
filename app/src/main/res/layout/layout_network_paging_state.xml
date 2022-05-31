@@ -35,7 +35,7 @@
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
-            android:text="@string/btn_match_load_retry"
+            android:text="@string/btn_retry"
             app:backgroundTint="@color/gunmetal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

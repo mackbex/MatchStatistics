@@ -17,6 +17,6 @@
     <string name="date_unit_day">일 전</string>
     <string name="date_unit_hour">시간 전</string>
     <string name="date_unit_yesterday">어제</string>
-    <string name="btn_match_load_retry">재시도</string>
+    <string name="btn_retry">재시도</string>
 </resources>
 
