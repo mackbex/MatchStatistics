@@ -197,9 +197,9 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:assists="@{match.assist}"
-                    app:deaths="@{match.death}"
-                    app:kills="@{match.kill}"
+                    app:match_assists="@{match.assist}"
+                    app:match_deaths="@{match.death}"
+                    app:match_kills="@{match.kill}"
                     app:layout_constraintStart_toEndOf="@id/table_spells"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="88 / 88 / 88" />
